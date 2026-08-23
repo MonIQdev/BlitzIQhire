@@ -6,7 +6,7 @@ import { AdminPanelClient } from '@/components/admin/AdminPanelClient';
 
 export default async function AdminPage() {
   const supabase = createServerComponentClient({ cookies });
-  const { data: { session } } = await supabase.getSession();
+  const { data: { session } } = await supabase.auth.getSession();
   if (!session) redirect('/login');
 
   const user = await prisma.user.findUnique({ where: { supabaseId: session.user.id } });
