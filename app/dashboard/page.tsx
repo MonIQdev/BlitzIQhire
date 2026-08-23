@@ -6,7 +6,7 @@ import { BlitzEngine } from '@/components/dashboard/BlitzEngine';
 
 export default async function DashboardPage() {
   const supabase = createServerComponentClient({ cookies });
-  const { data: { session } } = await supabase.getSession();
+  const { data: { session } } = await supabase.auth.getSession();
   if (!session) redirect('/login');
 
   const user = await prisma.user.upsert({
