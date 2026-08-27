@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Rocket, ShieldAlert, Heart, Layout, LogIn, User as UserIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -12,6 +12,7 @@ export function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const supabase = getSupabase();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) fetchAdminStatus(session.user.id);
@@ -66,7 +67,7 @@ export function Navbar() {
             </Link>
           ))}
           {session ? (
-             <button onClick={() => supabase.auth.signOut()} className="text-lavender/30 hover:text-white transition-colors">
+             <button onClick={() => getSupabase().auth.signOut()} className="text-lavender/30 hover:text-white transition-colors">
                <UserIcon size={20} />
              </button>
           ) : (
