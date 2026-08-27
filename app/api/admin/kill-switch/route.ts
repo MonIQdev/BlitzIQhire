@@ -5,11 +5,12 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export async function POST(req: Request) {
   const supabase = createServerComponentClient({ cookies });
-  const { data: { session } } = await supabase.getSession();
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { data: { user }, error } = await supabase.auth.getUser();
+  
+  if (!user || error) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const user = await prisma.user.findUnique({ where: { supabaseId: session.user.id } });
-  if (!user?.isAdmin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  const dbUser = await prisma.user.findUnique({ where: { supabaseId: user.id } });
+  if (!dbUser?.isAdmin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const { value } = await req.json();
   await prisma.appSettings.upsert({
