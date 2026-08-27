@@ -30,6 +30,3 @@ export const getSupabaseAdmin = () => {
   }
   return supabaseAdminInstance;
 };
-
-// Legacy export for backward compatibility
-export const supabase = getSupabase();
