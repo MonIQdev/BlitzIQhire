@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import { BlitzEngine } from '@/components/dashboard/BlitzEngine';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const supabase = createServerComponentClient({ cookies });
   const { data: { session } } = await supabase.auth.getSession();
