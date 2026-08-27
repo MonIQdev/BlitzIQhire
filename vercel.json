@@ -1,16 +1,34 @@
 {
   "buildCommand": "prisma generate && next build",
   "installCommand": "npm install",
-  "env": [
-    "DATABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "STRIPE_SECRET_KEY",
-    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-    "STRIPE_WEBHOOK_SECRET",
-    "OPENAI_API_KEY",
-    "NEXT_PUBLIC_BASE_URL"
-  ],
+  "env": {
+    "DATABASE_URL": {
+      "required": true
+    },
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "required": true
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "required": true
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "required": true
+    },
+    "STRIPE_SECRET_KEY": {
+      "required": true
+    },
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": {
+      "required": true
+    },
+    "STRIPE_WEBHOOK_SECRET": {
+      "required": true
+    },
+    "OPENAI_API_KEY": {
+      "required": true
+    },
+    "NEXT_PUBLIC_BASE_URL": {
+      "required": true
+    }
+  },
   "regions": ["iad1"]
 }
