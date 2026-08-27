@@ -10,21 +10,27 @@ export function Navbar() {
   const pathname = usePathname();
   const [session, setSession] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const supabase = getSupabase();
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) fetchAdminStatus(session.user.id);
-    });
+    setMounted(true);
+    try {
+      const supabase = getSupabase();
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+        if (session) fetchAdminStatus(session.user.id);
+      });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session) fetchAdminStatus(session.user.id);
-      else setIsAdmin(false);
-    });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        if (session) fetchAdminStatus(session.user.id);
+        else setIsAdmin(false);
+      });
 
-    return () => subscription.unsubscribe();
+      return () => subscription.unsubscribe();
+    } catch (error) {
+      console.error('Failed to initialize Supabase:', error);
+    }
   }, []);
 
   const fetchAdminStatus = async (uid: string) => {
@@ -43,6 +49,8 @@ export function Navbar() {
     ...(session ? [{ name: 'Dashboard', href: '/dashboard', icon: Layout }] : []),
     ...(isAdmin ? [{ name: 'Admin', href: '/admin', icon: ShieldAlert }] : []),
   ];
+
+  if (!mounted) return null;
 
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav h-20">
